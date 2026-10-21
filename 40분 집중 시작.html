@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>40분 집중 시작</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d2433;--mute:#6b7280;--line:#e5e1d8;--acc:#e8590c;--acc2:#fff1e8;--ok:#2b8a3e;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171c;--card:#1f232b;--ink:#eef0f4;--mute:#9aa3b2;--line:#2e3440;--acc:#ff8a4c;--acc2:#2c2118;--ok:#69db7c}}
+:root[data-theme="dark"]{--bg:#15171c;--card:#1f232b;--ink:#eef0f4;--mute:#9aa3b2;--line:#2e3440;--acc:#ff8a4c;--acc2:#2c2118;--ok:#69db7c}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.5}
+main{max-width:480px;margin:0 auto;padding:24px 18px 48px}
+h1{font-size:26px;margin:8px 0 4px;letter-spacing:-.02em}
+.sub{color:var(--mute);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chip{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px 12px;font:inherit;color:inherit;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;transition:.15s}
+.chip:hover,.chip:focus-visible{border-color:var(--acc);transform:translateY(-1px);outline:none}
+.chip .e{font-size:26px}.chip b{font-size:15px;font-weight:600}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:22px}
+.tag{display:inline-block;background:var(--acc2);color:var(--acc);border-radius:99px;padding:3px 11px;font-size:13px;font-weight:600}
+.act{font-size:22px;font-weight:700;line-height:1.4;margin:14px 0 6px;letter-spacing:-.01em}
+.hint{color:var(--mute);font-size:14px;margin:0 0 18px}
+.btn{width:100%;border:0;border-radius:14px;padding:15px;font:inherit;font-weight:700;font-size:16px;cursor:pointer;background:var(--acc);color:#fff}
+.btn.ghost{background:transparent;color:var(--mute);border:1.5px solid var(--line);margin-top:10px;font-weight:600}
+.hide{display:none}
+.ring{position:relative;width:220px;height:220px;margin:6px auto 18px}
+.ring svg{transform:rotate(-90deg)}
+.ring .t{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}
+.center{text-align:center}
+.big{font-size:44px;margin:4px 0}
+h2{font-size:15px;margin:30px 0 10px;color:var(--mute);font-weight:600}
+.stat{display:flex;gap:10px;margin-bottom:12px}
+.stat div{flex:1;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.stat b{display:block;font-size:22px;color:var(--acc)}.stat span{font-size:12px;color:var(--mute)}
+ul{list-style:none;margin:0;padding:0}
+li{display:flex;gap:10px;align-items:center;padding:10px 2px;border-bottom:1px solid var(--line);font-size:14px}
+li .m{color:var(--mute);font-size:12px;min-width:48px}li .s{margin-left:auto}
+.empty{color:var(--mute);font-size:14px;padding:8px 2px}
+</style>
+</head>
+<body>
+<main>
+<section id="home">
+  <h1>40분만 시작해요</h1>
+  <p class="sub">지금 공부가 왜 어려운가요? 하나만 골라 보세요.</p>
+  <div class="grid" id="chips"></div>
+</section>
+
+<section id="rec" class="hide">
+  <div class="card">
+    <span class="tag" id="rtag"></span>
+    <div class="act" id="ract"></div>
+    <p class="hint">이것부터 시작해 보세요. 40분 동안만 집중해 봐요.</p>
+    <button class="btn" id="go">40분 타이머 시작</button>
+    <button class="btn ghost" id="other">다른 행동 추천받기</button>
+    <button class="btn ghost" id="back1" style="margin-top:8px">이유 다시 고르기</button>
+  </div>
+</section>
+
+<section id="timer" class="hide">
+  <div class="card center">
+    <span class="tag" id="ttag"></span>
+    <p class="act" id="tact" style="font-size:18px"></p>
+    <div class="ring">
+      <svg width="220" height="220" viewBox="0 0 220 220"><circle cx="110" cy="110" r="98" fill="none" stroke="var(--line)" stroke-width="10"/><circle id="arc" cx="110" cy="110" r="98" fill="none" stroke="var(--acc)" stroke-width="10" stroke-linecap="round" stroke-dasharray="615.75" stroke-dashoffset="0"/></svg>
+      <div class="t" id="clock">40:00</div>
+    </div>
+    <p class="hint" id="cheer" style="min-height:3em;margin:-6px 0 14px"></p>
+    <button class="btn ghost" id="stop">그만할래요</button>
+  </div>
+</section>
+
+<section id="done" class="hide">
+  <div class="card center">
+    <div class="big">🎉</div>
+    <div class="act">시작했어요!</div>
+    <p class="hint">40분을 해냈어요. 정말 잘했어요.</p>
+    <button class="btn" id="more">40분 더 하기</button>
+    <button class="btn ghost" id="fin">여기까지 할게요</button>
+  </div>
+</section>
+
+<section id="quit" class="hide">
+  <div class="card center">
+    <div class="big">😏</div>
+    <div class="act" id="qmsg"></div>
+    <p class="hint" id="qsub"></p>
+    <button class="btn" id="retry">다시 도전</button>
+    <button class="btn ghost" id="qend">오늘은 여기까지</button>
+  </div>
+</section>
+
+<h2>나의 시작 기록</h2>
+<div class="stat"><div><b id="s1">0</b><span>오늘 시작</span></div><div><b id="s2">0</b><span>오늘 40분 완료</span></div><div><b id="s3">0</b><span>전체 시작</span></div></div>
+<ul id="log"></ul>
+</main>
+
+<script>
+var O=[
+{id:"vague",e:"🌫️",t:"너무 막막해요",a:["교재를 펼치고 오늘 볼 쪽에 책갈피 꽂기","할 일을 종이에 딱 3줄만 적기","첫 문제를 소리 내어 읽기"]},
+{id:"phone",e:"📱",t:"폰이 자꾸 보여요",a:["폰을 다른 방이나 가방 깊숙이 넣기","방해 금지 모드를 켜고 화면을 뒤집어 두기","책상 위에서 폰 빼고 전부 치우기"]},
+{id:"tired",e:"😴",t:"너무 피곤해요",a:["찬물로 세수하거나 물 한 컵 마시기","자리에서 일어나 스트레칭 1분 하기","서서 교재 첫 문단만 읽기"]},
+{id:"bored",e:"😮‍💨",t:"그냥 하기 싫어요",a:["제일 쉬운 문제 딱 하나만 풀기","좋아하는 펜으로 오늘 날짜만 적기","40분만 하고 쉬어도 된다고 스스로에게 말하기"]},
+{id:"where",e:"🧭",t:"뭘 할지 모르겠어요",a:["어제 하던 부분을 다시 펼치기","목차를 훑고 제일 쉬운 단원 하나 고르기","틀렸던 문제 하나 다시 보기"]},
+{id:"perfect",e:"💎",t:"완벽하게 하고 싶어요",a:["엉망이어도 되니 초안처럼 3줄만 적기","정답은 잊고 풀이 첫 줄만 쓰기","타이머가 끝날 때까지 지우개 쓰지 않기"]}
+];
+var K="study-start-log-v1",D=2400000;
+var $=function(i){return document.getElementById(i)};
+var cur=null,idx=0,end=0,iv=null,rid=null,log=[],mark=0;
+var C=["10분 지났어요! 벌써 시동 걸렸네요 💪 화이팅!","20분 돌파! 반 왔어요. 이 흐름 그대로 가요 🔥","30분 지났어요! 조금만 더 하면 끝이에요, 화이팅 ✨"];
+try{log=JSON.parse(localStorage.getItem(K)||"[]");if(!Array.isArray(log))log=[]}catch(e){log=[]}
+function save(){try{localStorage.setItem(K,JSON.stringify(log.slice(-200)))}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function show(id){["home","rec","timer","done","quit"].forEach(function(s){$(s).classList.toggle("hide",s!==id)});window.scrollTo(0,0)}
+function oById(id){return O.filter(function(o){return o.id===id})[0]}
+$("chips").innerHTML=O.map(function(o){return '<button class="chip" data-id="'+o.id+'"><span class="e">'+o.e+'</span><b>'+o.t+'</b></button>'}).join("");
+$("chips").onclick=function(ev){var b=ev.target.closest(".chip");if(!b)return;cur=oById(b.dataset.id);idx=Math.floor(Math.random()*cur.a.length);render();show("rec")};
+function render(){$("rtag").textContent=cur.e+" "+cur.t;$("ract").textContent=cur.a[idx]}
+$("other").onclick=function(){idx=(idx+1)%cur.a.length;render()};
+$("back1").onclick=function(){show("home")};
+function fmt(ms){var s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+":"+("0"+(s%60)).slice(-2)}
+function tick(){var left=end-Date.now(),el=Math.floor((D-left)/600000);if(el>mark&&el<4){mark=el;$("cheer").textContent=C[el-1]}$("clock").textContent=fmt(left);$("arc").style.strokeDashoffset=String(615.75*(1-Math.max(0,left)/D));
+ if(left<=0){clearInterval(iv);finish(true)}}
+function start(){end=Date.now()+D;mark=0;$("cheer").textContent="시작이 제일 어려운 거예요. 지금 잘하고 있어요 🙌";clearInterval(iv);iv=setInterval(tick,250);tick();show("timer")}
+$("go").onclick=function(){
+ log.push({t:Date.now(),o:cur.id,a:cur.a[idx],d:0});save();
+ $("ttag").textContent=cur.e+" "+cur.t;$("tact").textContent=cur.a[idx];
+ start();renderLog()};
+function finish(ok){
+ if(ok&&log.length){log[log.length-1].d=1;save()}
+ renderLog();show(ok?"done":"home")}
+var Q=["벌써 포기해요? 😏","겨우 이거 하고 끝이에요?","어, 벌써 가요? 이제 막 시작했는데요","여기서 멈추면 폰이 이겨요 📱","방금 마음이 한 번 흔들렸죠? 다시 잡아 봐요"];
+$("stop").onclick=function(){
+ clearInterval(iv);var m=Math.max(0,Math.floor((D-(end-Date.now()))/60000));
+ $("qmsg").textContent=Q[Math.floor(Math.random()*Q.length)];
+ $("qsub").textContent=m>0?m+"분이나 했는데 아깝지 않아요? 다시 40분 가 봐요.":"1분도 못 채웠어요. 다시 해 볼 수 있죠?";
+ renderLog();show("quit")};
+$("retry").onclick=function(){log.push({t:Date.now(),o:cur.id,a:cur.a[idx],d:0});save();start();renderLog()};
+$("qend").onclick=function(){show("home")};
+$("more").onclick=function(){start()};
+$("fin").onclick=function(){show("home")};
+function sameDay(a,b){var x=new Date(a),y=new Date(b);return x.toDateString()===y.toDateString()}
+function renderLog(){
+ var n=Date.now(),td=log.filter(function(l){return sameDay(l.t,n)});
+ $("s1").textContent=td.length;$("s2").textContent=td.filter(function(l){return l.d}).length;$("s3").textContent=log.length;
+ if(!log.length){$("log").innerHTML='<div class="empty">아직 기록이 없어요. 첫 시작을 해 보세요.</div>';return}
+ $("log").innerHTML=log.slice(-8).reverse().map(function(l){
+  var d=new Date(l.t),o=oById(l.o)||{e:"•"},tm=("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2);
+  return '<li><span class="m">'+(d.getMonth()+1)+"/"+d.getDate()+" "+tm+'</span><span>'+o.e+" "+esc(l.a)+'</span><span class="s">'+(l.d?"✅":"▫️")+'</span></li>'}).join("")}
+renderLog();
+</script>
+</body>
+</html>
